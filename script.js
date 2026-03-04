@@ -42,7 +42,7 @@ function criarRegistro() {
       // Exibe a mensagem de sucesso ou erro
       alert(data.message);
 
-      this.reset();
+      formulario.reset();
       window.scrollTo({ top: 0, behavior: "smooth" }); // Sobe a página suavemente
     })
     .catch((error) => {
