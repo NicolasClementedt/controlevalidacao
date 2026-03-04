@@ -1,82 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styleindex.css"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
     <title>Controle de Validações</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Controle de Validações Anormais</h1>
-        <p>Registre casos anormais e inconsistêntes de forma mais simples e intuitiva</p>
+      <h1>Pagina de Cadastro das Validações</h1>
+      <p>Registre aqui os casos anormais e inconsistêntes</p>
+
+      <nav>
+        <a href="index.html"><p>Pagina de Cadastro</p></a>
+        <a href="registros.html"><p>Pagina de Visualização</p></a>
+      </nav>
     </header>
     <main>
-        <h2>Formulário</h2>
-        <form id="form">
-            <fieldset>
-                <legend>Dados da Transação</legend>
-                <label for="idTransacao"> ID da Transação: </label>
-                <input type="text" id="idTransacao" name="idTransacao"/><br><br>
-                
-                <label for="pracaPortico">Praça / Pórtico: </label>
-                <input type="text" id="pracaPortico" name="pracaPortico"/><br><br>
+      <h2>Formulário</h2>
+      <form id="form">
+        <fieldset>
+          <legend>Dados da Transação</legend>
+          <label for="idTransacao"> ID da Transação: </label>
+          <input
+            type="text"
+            id="idTransacao"
+            name="idTransacao"
+            placeholder="Insira o ID completo da transação"
+          /><br /><br />
 
-                <label for="dataTransacao"> Data e Hora da Transação: </label>
-                <input type="datetime-local"id="dataTransacao" name="dataTransacao"/><br><br>
-            </fieldset>
+          <label for="pracaPortico">Praça / Pórtico: </label>
+          <input
+            type="text"
+            id="pracaPortico"
+            name="pracaPortico"
+            placeholder="Ex: P5 ou Pórtico 5"
+          /><br /><br />
 
-            <fieldset>
-                <legend>Dados de Pagamento</legend>
-                <label for="placa"> Placa do Veículo: </label>
-                <input type="text" id="placa" name="placa"/>
+          <label for="dataTransacao">
+            Data e Hora da Transação (use o Ícone de calendário):
+          </label>
+          <input
+            type="datetime-local"
+            id="dataTransacao"
+            name="dataTransacao"
+          /><br /><br />
+        </fieldset>
 
-                <label for="metodoPagamento"> Qual o Método de Pagamento? </label>
-                <select id="metodoPagamento" name="metodoPagamento">
-                    <option value="tag">TAG</option>
-                    <option value="freeflow">Free Flow</option>
-                    <option value="isento"> Isento </option>
-                     <option value="violacao"> Violação </option>
-                </select>
+        <fieldset>
+          <legend>Dados de Pagamento</legend>
+          <label for="placa"> Placa do Veículo: </label>
+          <input type="text" id="placa" name="placa" placeholder="ABC1D23" />
 
-                <label for="osa"> Qual a Emissora da TAG ?</label>
-                <select id="osa" name="osa">
-                    <option value="semparar">Sem Parar</option>
-                    <option value="greenpass">Green Pass</option>
-                    <option value="movemais"> Move Mais </option>
-                    <option value="veloe"> Veloe </option>
-                    <option value="automatico"> Automático </option>
-                    <option value="indefinido"> indefinido</option>
-                </select>
-            </fieldset>
+          <label for="metodoPagamento"> Qual o Método de Pagamento? </label>
+          <select id="metodoPagamento" name="metodoPagamento">
+            <option value="tag">TAG</option>
+            <option value="freeflow">Free Flow</option>
+            <option value="isento">Isento</option>
+            <option value="violacao">Violação</option>
+          </select>
 
-            <fieldset>
-                <legend> Detalhes sobre o Caso </legend>
-                <label for="descricao"> Descreva o problema:</label>
-                <textarea id="descricao" name="descricao" rows="5" cols="30">
-                    Insira o texto aqui...    
-                </textarea>
+          <label for="osa"> Qual a Emissora da TAG ?</label>
+          <select id="osa" name="osa">
+            <option value="semparar">Sem Parar</option>
+            <option value="greenpass">Green Pass</option>
+            <option value="movemais">Move Mais</option>
+            <option value="veloe">Veloe</option>
+            <option value="automatico">Automático</option>
+            <option value="indefinido">indefinido</option>
+          </select>
+        </fieldset>
 
-                <label for="qualidadeFotos"> As fotos estão boas? </label>
-                <textarea id="qualidadeFotos" name="qualidadeFotos" rows="5" cols="30">
-                    Insira o texto aqui...
-                </textarea>
-            </fieldset>
+        <fieldset>
+          <legend>Detalhes sobre o Caso</legend>
+          <label for="descricao">Descreva o problema:</label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            rows="5"
+            cols="30"
+            placeholder="Ex: Dados inconsistentes, sistema não aceita validação, precisa atualizar cadastro na OSA"
+          ></textarea>
 
-            <fieldset>
-                <legend> Sobre o Revisor </legend>
-                <label for="revisor"> Escreva seu nome: </label>
-                <input type="text" id="revisor" name="revisor"/>
+          <label for="qualidadeFotos">As fotos estão boas? </label
+          ><textarea
+            id="qualidadeFotos"
+            name="qualidadeFotos"
+            rows="5"
+            cols="30"
+            placeholder="Ex: Foto lateral e panorâmica boa, eixos suspensos com visibilidade boa. Foto frontal não tem. Foto traseira de outro veículo. Placa só pela OCR."
+          ></textarea>
+        </fieldset>
 
-                </fieldset>
+        <fieldset>
+          <legend>Sobre o Revisor</legend>
+          <label for="revisor"> Caso registrado por: </label>
+          <input
+            type="text"
+            id="revisor"
+            name="revisor"
+            placeholder=" Nome do Revisor"
+          />
+        </fieldset>
 
-                <button type="submit"> Salvar Registro </button>
-            
-        </form>
+        <button type="submit">Salvar Registro</button>
+      </form>
     </main>
-    
-    <footer><p> Ainda não sei o que colocar! </p></footer>
 
-    <script src="script.js"> </script>
-</body>
+    <footer><p>Time de Suporte Tecsidel</p></footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -1,0 +1,419 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap");
+
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0d0f14;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --border: #252a38;
+  --accent: #4f7cff;
+  --accent-2: #a78bfa;
+  --glow: rgba(79, 124, 255, 0.18);
+  --text: #e8eaf2;
+  --muted: #7b82a0;
+  --danger: #ff6b6b;
+  --success: #43e97b;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  --font-display: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Background Mesh ──────────────────────────────────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 10% 0%,
+      rgba(79, 124, 255, 0.1) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 90% 100%,
+      rgba(167, 139, 250, 0.08) 0%,
+      transparent 70%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Header ───────────────────────────────────────────────────────────────── */
+header {
+  position: relative;
+  z-index: 10;
+  padding: 2.5rem 4rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13, 15, 20, 0.85);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+header h1 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #fff 30%, var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header > p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Nav ───────────────────────────────────────────────────────────────────── */
+nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav a p {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+nav a p:hover,
+nav a:first-child p {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--glow);
+  box-shadow: 0 0 18px var(--glow);
+}
+
+/* ─── Main ──────────────────────────────────────────────────────────────────── */
+main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+}
+
+main h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.4rem;
+  color: #fff;
+}
+
+main h2::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+  margin-top: 0.6rem;
+}
+
+/* ─── Form ──────────────────────────────────────────────────────────────────── */
+#form {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ─── Fieldset ──────────────────────────────────────────────────────────────── */
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem 2rem;
+  background: var(--surface);
+  position: relative;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  animation: slideUp 0.5s ease both;
+}
+
+fieldset:hover {
+  border-color: rgba(79, 124, 255, 0.3);
+  box-shadow: 0 0 30px rgba(79, 124, 255, 0.05);
+}
+
+fieldset:nth-child(1) {
+  animation-delay: 0.05s;
+}
+fieldset:nth-child(2) {
+  animation-delay: 0.1s;
+}
+fieldset:nth-child(3) {
+  animation-delay: 0.15s;
+}
+fieldset:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+legend {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0 0.75rem;
+  background: var(--surface);
+  border-radius: 4px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────────────── */
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.01em;
+  margin-top: 1.25rem;
+}
+
+fieldset label:first-of-type {
+  margin-top: 0.5rem;
+}
+
+/* ─── Inputs ─────────────────────────────────────────────────────────────────── */
+input[type="text"],
+input[type="datetime-local"],
+select,
+textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 0.7rem 1rem;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  background: #16192380;
+  box-shadow:
+    0 0 0 3px rgba(79, 124, 255, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) brightness(1.5);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ─── Select ─────────────────────────────────────────────────────────────────── */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237b82a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+select option {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* ─── Textarea ───────────────────────────────────────────────────────────────── */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.65;
+}
+
+/* ─── Submit Button ──────────────────────────────────────────────────────────── */
+button[type="submit"] {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  border: none;
+  border-radius: var(--radius);
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  align-self: flex-start;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba(79, 124, 255, 0.35);
+  animation: slideUp 0.5s 0.25s ease both;
+}
+
+button[type="submit"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(79, 124, 255, 0.5);
+}
+
+button[type="submit"]:hover::before {
+  opacity: 1;
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(79, 124, 255, 0.3);
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  header {
+    padding: 1.5rem 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  fieldset {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  main h2 {
+    font-size: 1.6rem;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    text-align: center;
+  }
+}

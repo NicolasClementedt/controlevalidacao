@@ -2,54 +2,21 @@
 <html>
   <head>
     <title>Sistema do Nicolinhas</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        padding: 20px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-      }
-      th {
-        background-color: #f4f4f4;
-      }
-      .form-container {
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-      }
-      input {
-        margin: 5px 0;
-        padding: 8px;
-        width: 200px;
-        display: block;
-      }
-    </style>
+    <link rel="stylesheet" href="registros.css" />
   </head>
   <body>
+    <header>
+
+      </nav>
+      <h1> Página de Visualização </h1>
+      <p> Aqui exibe os casos anormais e inconsistêntes cadastrados</p>
+      <nav>
+        <a href="index.html"><p>Pagina de Cadastro</p></a>
+        <a href="registros.html"><p>Pagina de Registros</p></a>
+      
+    </header>
     <div class="form-container">
-      <h2>Novo Registro</h2>
-      <form id="meuFormulario">
-        <input
-          type="text"
-          id="idTransacao"
-          placeholder="ID Transação"
-          required
-        />
-        <input type="text" id="placa" placeholder="Placa" required />
-        <input type="text" id="pracaPortico" placeholder="Praça/Pórtico" />
-        <input type="text" id="revisor" placeholder="Revisor" required />
-        <button type="submit" id="btnSalvar">Salvar</button>
-      </form>
+      <form id="meuFormulario"></form>
     </div>
 
     <hr />
@@ -60,8 +27,8 @@
         <tr>
           <th>ID Transação</th>
           <th>Placa</th>
-          <th>Revisor</th>
-          <th>Status</th>
+          <th>Data</th>
+          <th></th>
         </tr>
       </thead>
       <tbody id="corpo-tabela">
@@ -81,7 +48,7 @@
 
     <script>
       const URL_API =
-        "https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec";
+        "https://script.google.com/macros/s/AKfycbyA6CWdnTRFx7WeCyMvN0jRgPqLDQ4C77N0HEZQjCNMLApXWve5gu7tGWiEGtHTNeKKTw/exec";
 
       const TAM_PAGINA = 100;
       let dadosCache = [];
@@ -90,7 +57,7 @@
       function atualizarPaginacao() {
         const totalPaginas = Math.max(
           1,
-          Math.ceil(dadosCache.length / TAM_PAGINA)
+          Math.ceil(dadosCache.length / TAM_PAGINA),
         );
         const info = document.getElementById("info-pagina");
         const btnAnterior = document.getElementById("btn-anterior");
@@ -123,11 +90,24 @@
 
         let html = "";
         pagina.forEach((item) => {
+          let dataFormatada = "Data inválida";
+
+          if (item.dataTransacao) {
+            const dataObj = new Date (item.dataTransacao);
+
+            dataFormatada = dataObj.toLocaleString('pt-BR',
+            { day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit'
+
+            });
+          }
           html += `<tr>
               <td><a href="detalhes.html?id=${item.idUnico}">${item.idTransacao}</a></td>
               <td>${item.placa}</td>
-              <td>${item.revisor}</td>
-              <td>${item.status}</td>
+              <td>${dataFormatada}</td>
             </tr>`;
         });
 
@@ -164,8 +144,7 @@
             action: "criar",
             idTransacao: document.getElementById("idTransacao").value,
             placa: document.getElementById("placa").value,
-            pracaPortico: document.getElementById("pracaPortico").value,
-            revisor: document.getElementById("revisor").value,
+            dataFormatada: document.getElementById("data").value,
             // Adicione os outros campos aqui se desejar (osa, descricao, etc)
           });
 
@@ -220,7 +199,7 @@
           btnProximo.addEventListener("click", function () {
             const totalPaginas = Math.max(
               1,
-              Math.ceil(dadosCache.length / TAM_PAGINA)
+              Math.ceil(dadosCache.length / TAM_PAGINA),
             );
             if (paginaAtual < totalPaginas) {
               paginaAtual++;

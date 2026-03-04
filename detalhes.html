@@ -1,42 +1,73 @@
-<script>
-  const URL_API =
-    "https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec";
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Detalhes do Registro</title>
+    <link rel="stylesheet" href="detalhes.css" />
+  </head>
+  <body>
+    <h2>Detalhes do Registro</h2>
+    <div id="conteudo">Carregando...</div>
 
-  async function buscarDetalhes() {
-    const corpo = document.getElementById("conteudo");
-    const params = new URLSearchParams(window.location.search);
-    const idDesejado = params.get("id");
+    <script>
+      const URL_API =
+        "https://script.google.com/macros/s/AKfycbyA6CWdnTRFx7WeCyMvN0jRgPqLDQ4C77N0HEZQjCNMLApXWve5gu7tGWiEGtHTNeKKTw/exec";
 
-    // 1. TENTA PEGAR DA MEMÓRIA (INSTANTÂNEO)
-    const cache = localStorage.getItem("cacheRegistros");
-    let registro = null;
+      async function buscarDetalhes() {
+        const corpo = document.getElementById("conteudo");
+        const params = new URLSearchParams(window.location.search);
+        const idDesejado = params.get("id");
 
-    if (cache) {
-      const dados = JSON.parse(cache);
-      registro = dados.find((item) => item.idUnico == idDesejado);
-    }
+        if (!corpo) {
+          console.error("Elemento #conteudo não encontrado.");
+          return;
+        }
 
-    // 2. SE NÃO ACHOU NO CACHE OU DEU F5, BUSCA NO GOOGLE (LENTO)
-    if (!registro) {
-      console.log("Cache vazio, buscando no Google...");
-      const response = await fetch(`${URL_API}?action=listar`);
-      const dados = await response.json();
-      registro = dados.find((item) => item.idUnico == idDesejado);
-      // Atualiza o cache para a próxima vez
-      localStorage.setItem("cacheRegistros", JSON.stringify(dados));
-    }
+        // 1. TENTA PEGAR DA MEMÓRIA (INSTANTÂNEO)
+        const cache = localStorage.getItem("cacheRegistros");
+        let registro = null;
 
-    // 3. DESENHA NA TELA
-    if (registro) {
-      corpo.innerHTML = `
-        <div class="item"><span class="label">Placa</span><div class="valor">${registro.placa}</div></div>
-        <div class="item"><span class="label">Revisor</span><div class="valor">${registro.revisor}</div></div>
-        <div class="item"><span class="label">Status</span><div class="valor">${registro.status}</div></div>
-        `;
-    } else {
-      corpo.innerHTML = "Registro não encontrado.";
-    }
-  }
+        if (cache) {
+          const dados = JSON.parse(cache);
+          registro = dados.find((item) => item.idUnico == idDesejado);
+        }
 
-  window.onload = buscarDetalhes;
-</script>
+        // 2. SE NÃO ACHOU NO CACHE OU DEU F5, BUSCA NO GOOGLE (LENTO)
+        if (!registro) {
+          console.log("Cache vazio, buscando no Google...");
+          const response = await fetch(`${URL_API}?action=listar`);
+          const dados = await response.json();
+          registro = dados.find((item) => item.idUnico == idDesejado);
+          // Atualiza o cache para a próxima vez
+          localStorage.setItem("cacheRegistros", JSON.stringify(dados));
+        }
+
+        // 3. DESENHA NA TELA
+        /*
+
+
+
+        */
+        if (registro) {
+          corpo.innerHTML = `
+           <div class="item"><span class="label">id da Transação</span><div class="valor">${registro.idTransacao}</div></div>
+            <div class="item"><span class="label">Praça / Portico </span><div class="valor">${registro.pracaPortico}</div></div>
+            <div class="item"><span class="label">Data da Transação</span><div class="valor">${registro.dataTransacao}</div></div>
+            <div class="item"><span class="label">Placa do Veículo </span><div class="valor">${registro.placa}</div></div>
+            <div class="item"><span class="label">Metodo de Pagamento</span><div class="valor">${registro.metodoPagamento}</div></div>
+            <div class="item"><span class="label">Osa</span><div class="valor">${registro.osa}</div></div>
+            <div class="item"><span class="label">Descrição</span><div class="valor">${registro.descricao}</div></div>
+            <div class="item"><span class="label">Qualidade das Fotos</span><div class="valor">${registro.qualidadeFoto}</div></div>
+            <div class="item"><span class="label">Nome do Revisor</span><div class="valor">${registro.revisor}</div></div>
+          `;
+        } else {
+          corpo.innerHTML = "Registro não encontrado.";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", buscarDetalhes);
+    </script>
+
+    <button onClick="window.history.back()">Voltar</button>
+  </body>
+</html>

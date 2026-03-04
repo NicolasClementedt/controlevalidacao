@@ -22,31 +22,34 @@ function criarRegistro() {
     descricao: descricao,
     qualidadeFotos: qualidadeFotos,
     revisor: revisor,
-    action: "criar" // Parâmetro para indicar a ação
+    action: "criar", // Parâmetro para indicar a ação
   };
 
   // Envia a requisição POST para a API
-  fetch("https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec", {
+  fetch(
+    "https://script.google.com/macros/s/AKfycbyA6CWdnTRFx7WeCyMvN0jRgPqLDQ4C77N0HEZQjCNMLApXWve5gu7tGWiEGtHTNeKKTw/exec",
+    {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams(data)
-    })
-    .then(response => response.json())
-    .then(data => {
+      body: new URLSearchParams(data),
+    },
+  )
+    .then((response) => response.json())
+    .then((data) => {
       // Exibe a mensagem de sucesso ou erro
       alert(data.message);
     })
-    .catch(error => {
+    .catch((error) => {
       // Exibe a mensagem de erro
       alert("Erro ao salvar registro: " + error);
     });
 }
 
 // Adiciona um listener para o evento submit do formulário
-document.getElementById("form").addEventListener("submit", function(event) {
+document.getElementById("form").addEventListener("submit", function (event) {
   event.preventDefault(); // Evita o envio padrão do formulário
   criarRegistro();
 });
