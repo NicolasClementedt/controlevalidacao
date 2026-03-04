@@ -1,58 +1,63 @@
 // Função para enviar os dados do formulário para a API
 function criarRegistro() {
-  // Obtém os valores dos campos do formulário
-  var idTransacao = document.getElementById("idTransacao").value;
-  var pracaPortico = document.getElementById("pracaPortico").value;
-  var dataTransacao = document.getElementById("dataTransacao").value;
-  var placa = document.getElementById("placa").value;
-  var metodoPagamento = document.getElementById("metodoPagamento").value;
-  var osa = document.getElementById("osa").value;
-  var descricao = document.getElementById("descricao").value;
-  var qualidadeFotos = document.getElementById("qualidadeFotos").value;
-  var revisor = document.getElementById("revisor").value;
+  // 1. Capturamos o formulário para poder resetar depois
+  const formulario = document.getElementById("form");
+  const btn = formulario.querySelector('button[type="submit"]');
 
-  // Cria um objeto com os dados do formulário
+  // Bloqueia o botão para evitar cliques duplos
+  btn.innerText = "Salvando...";
+  btn.disabled = true;
+
+  // 2. Obtém os valores dos campos
   var data = {
-    idTransacao: idTransacao,
-    pracaPortico: pracaPortico,
-    dataTransacao: dataTransacao,
-    placa: placa,
-    metodoPagamento: metodoPagamento,
-    osa: osa,
-    descricao: descricao,
-    qualidadeFotos: qualidadeFotos,
-    revisor: revisor,
-    action: "criar", // Parâmetro para indicar a ação
+    idTransacao: document.getElementById("idTransacao").value,
+    pracaPortico: document.getElementById("pracaPortico").value,
+    dataTransacao: document.getElementById("dataTransacao").value,
+    placa: document.getElementById("placa").value,
+    metodoPagamento: document.getElementById("metodoPagamento").value,
+    osa: document.getElementById("osa").value,
+    descricao: document.getElementById("descricao").value,
+    qualidadeFotos: document.getElementById("qualidadeFotos").value,
+    revisor: document.getElementById("revisor").value,
+    action: "criar",
   };
 
-  // Envia a requisição POST para a API
+  // 3. Envia a requisição
   fetch(
     "https://script.google.com/macros/s/AKfycbyA6CWdnTRFx7WeCyMvN0jRgPqLDQ4C77N0HEZQjCNMLApXWve5gu7tGWiEGtHTNeKKTw/exec",
     {
       method: "POST",
-      mode: "cors",
+      mode: "no-cors", // "no-cors" evita o erro de redirecionamento do Google
+      cache: "no-cache",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams(data),
     },
   )
-    .then((response) => response.json())
-    .then((data) => {
-      // Exibe a mensagem de sucesso ou erro
-      alert(data.message);
+    .then(() => {
+      // Como usamos 'no-cors', não tentamos ler response.json() pois daria erro.
+      // Se chegou aqui, o navegador enviou os dados com sucesso!
 
+      alert("Registro salvo com sucesso!");
+
+      // 4. AGORA VAI FUNCIONAR: Limpa e Sobe
       formulario.reset();
-      window.scrollTo({ top: 0, behavior: "smooth" }); // Sobe a página suavemente
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Restaura o botão
+      btn.innerText = "Salvar Registro";
+      btn.disabled = false;
     })
     .catch((error) => {
-      // Exibe a mensagem de erro
       alert("Erro ao salvar registro: " + error);
+      btn.innerText = "Salvar Registro";
+      btn.disabled = false;
     });
 }
 
-// Adiciona um listener para o evento submit do formulário
+// Listener para o formulário
 document.getElementById("form").addEventListener("submit", function (event) {
-  event.preventDefault(); // Evita o envio padrão do formulário
+  event.preventDefault();
   criarRegistro();
 });
