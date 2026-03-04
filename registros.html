@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sistema do Nicolinhas</title>
+  <style>
+    /* CSS: Estilize sua tabela e formulário aqui */
+    body { font-family: sans-serif; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .form-container { margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Novo Registro</h2>
+    <form id="meuFormulario">
+      <input type="text" id="placa" placeholder="Placa" required>
+      <input type="text" id="revisor" placeholder="Revisor" required>
+      <button type="submit">Salvar</button>
+    </form>
+  </div>
+
+  <hr>
+
+  <h2>Registros na Planilha</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Placa</th>
+        <th>Revisor</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="corpo-tabela">
+      </tbody>
+  </table>
+
+  <script>
+    const URL_API = "https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec"
+
+    // Função para LISTAR (Carrega os dados)
+    function listar() {
+      fetch(URL_API + "?action=listar")
+        .then(res => res.json())
+        .then(dados => {
+          const corpo = document.getElementById("corpo-tabela");
+          corpo.innerHTML = ""; // Limpa antes de carregar
+          dados.forEach(item => {
+            corpo.innerHTML += `<tr>
+              <td>${item.placa}</td>
+              <td>${item.revisor}</td>
+              <td>${item.status}</td>
+            </tr>`;
+          });
+        });
+    }
+
+    // Função para CRIAR (Envia o formulário)
+    document.getElementById("meuFormulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+      // ... lógica do fetch POST que já funcionou ...
+      // DICA: Depois que o POST der sucesso, chame listar() para atualizar a tabela na hora!
+    });
+
+    // Carrega a lista assim que abrir o arquivo
+    window.onload = listar;
+  </script>
+
+</body>
+</html>

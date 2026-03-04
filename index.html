@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styleindex.css"/>
+    <title>Controle de Validações</title>
+</head>
+<body>
+    <header>
+        <h1>Controle de Validações Anormais</h1>
+        <p>Registre casos anormais e inconsistêntes de forma mais simples e intuitiva</p>
+    </header>
+    <main>
+        <h2>Formulário</h2>
+        <form id="form">
+            <fieldset>
+                <legend>Dados da Transação</legend>
+                <label for="idTransacao"> ID da Transação: </label>
+                <input type="text" id="idTransacao" name="idTransacao"/><br><br>
+                
+                <label for="pracaPortico">Praça / Pórtico: </label>
+                <input type="text" id="pracaPortico" name="pracaPortico"/><br><br>
+
+                <label for="dataTransacao"> Data e Hora da Transação: </label>
+                <input type="datetime-local"id="dataTransacao" name="dataTransacao"/><br><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Dados de Pagamento</legend>
+                <label for="placa"> Placa do Veículo: </label>
+                <input type="text" id="placa" name="placa"/>
+
+                <label for="metodoPagamento"> Qual o Método de Pagamento? </label>
+                <select id="metodoPagamento" name="metodoPagamento">
+                    <option value="tag">TAG</option>
+                    <option value="freeflow">Free Flow</option>
+                    <option value="isento"> Isento </option>
+                     <option value="violacao"> Violação </option>
+                </select>
+
+                <label for="osa"> Qual a Emissora da TAG ?</label>
+                <select id="osa" name="osa">
+                    <option value="semparar">Sem Parar</option>
+                    <option value="greenpass">Green Pass</option>
+                    <option value="movemais"> Move Mais </option>
+                    <option value="veloe"> Veloe </option>
+                    <option value="automatico"> Automático </option>
+                    <option value="indefinido"> indefinido</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <legend> Detalhes sobre o Caso </legend>
+                <label for="descricao"> Descreva o problema:</label>
+                <textarea id="descricao" name="descricao" rows="5" cols="30">
+                    Insira o texto aqui...    
+                </textarea>
+
+                <label for="qualidadeFotos"> As fotos estão boas? </label>
+                <textarea id="qualidadeFotos" name="qualidadeFotos" rows="5" cols="30">
+                    Insira o texto aqui...
+                </textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend> Sobre o Revisor </legend>
+                <label for="revisor"> Escreva seu nome: </label>
+                <input type="text" id="revisor" name="revisor"/>
+
+                </fieldset>
+
+                <button type="submit"> Salvar Registro </button>
+            
+        </form>
+    </main>
+    
+    <footer><p> Ainda não sei o que colocar! </p></footer>
+
+    <script src="script.js"> </script>
+</body>
+</html>
