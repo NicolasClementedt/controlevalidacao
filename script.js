@@ -41,6 +41,9 @@ function criarRegistro() {
     .then((data) => {
       // Exibe a mensagem de sucesso ou erro
       alert(data.message);
+
+      this.reset();
+      window.scrollTo({ top: 0, behavior: "smooth" }); // Sobe a página suavemente
     })
     .catch((error) => {
       // Exibe a mensagem de erro
