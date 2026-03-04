@@ -1,72 +1,234 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Sistema do Nicolinhas</title>
-  <style>
-    /* CSS: Estilize sua tabela e formulário aqui */
-    body { font-family: sans-serif; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    .form-container { margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; }
-  </style>
-</head>
-<body>
+  <head>
+    <title>Sistema do Nicolinhas</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+      .form-container {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+      input {
+        margin: 5px 0;
+        padding: 8px;
+        width: 200px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Novo Registro</h2>
+      <form id="meuFormulario">
+        <input
+          type="text"
+          id="idTransacao"
+          placeholder="ID Transação"
+          required
+        />
+        <input type="text" id="placa" placeholder="Placa" required />
+        <input type="text" id="pracaPortico" placeholder="Praça/Pórtico" />
+        <input type="text" id="revisor" placeholder="Revisor" required />
+        <button type="submit" id="btnSalvar">Salvar</button>
+      </form>
+    </div>
 
-  <div class="form-container">
-    <h2>Novo Registro</h2>
-    <form id="meuFormulario">
-      <input type="text" id="placa" placeholder="Placa" required>
-      <input type="text" id="revisor" placeholder="Revisor" required>
-      <button type="submit">Salvar</button>
-    </form>
-  </div>
+    <hr />
 
-  <hr>
-
-  <h2>Registros na Planilha</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Placa</th>
-        <th>Revisor</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="corpo-tabela">
+    <h2>Registros na Planilha</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Transação</th>
+          <th>Placa</th>
+          <th>Revisor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="corpo-tabela">
+        <tr>
+          <td colspan="4">Carregando...</td>
+        </tr>
       </tbody>
-  </table>
+    </table>
+    <div
+      id="paginacao"
+      style="margin-top: 10px; display: flex; align-items: center; gap: 8px"
+    >
+      <button id="btn-anterior" disabled>Anterior</button>
+      <span id="info-pagina"></span>
+      <button id="btn-proximo" disabled>Próxima</button>
+    </div>
 
-  <script>
-    const URL_API = "https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec"
+    <script>
+      const URL_API =
+        "https://script.google.com/macros/s/AKfycbyCKbrlJ9QLMe7nLlloWfZlOSIGtyC0b11RCUBnSm8_zeGG-eNZlTqbTcLlQOlE_pxMwg/exec";
 
-    // Função para LISTAR (Carrega os dados)
-    function listar() {
-      fetch(URL_API + "?action=listar")
-        .then(res => res.json())
-        .then(dados => {
-          const corpo = document.getElementById("corpo-tabela");
-          corpo.innerHTML = ""; // Limpa antes de carregar
-          dados.forEach(item => {
-            corpo.innerHTML += `<tr>
+      const TAM_PAGINA = 100;
+      let dadosCache = [];
+      let paginaAtual = 1;
+
+      function atualizarPaginacao() {
+        const totalPaginas = Math.max(
+          1,
+          Math.ceil(dadosCache.length / TAM_PAGINA)
+        );
+        const info = document.getElementById("info-pagina");
+        const btnAnterior = document.getElementById("btn-anterior");
+        const btnProximo = document.getElementById("btn-proximo");
+
+        if (!info || !btnAnterior || !btnProximo) return;
+
+        info.textContent = `Página ${paginaAtual} de ${totalPaginas} (${dadosCache.length} registros)`;
+        btnAnterior.disabled = paginaAtual <= 1;
+        btnProximo.disabled = paginaAtual >= totalPaginas;
+      }
+
+      function renderTabela() {
+        const corpo = document.getElementById("corpo-tabela");
+        if (!corpo) return;
+
+        if (!dadosCache.length) {
+          corpo.innerHTML = `
+            <tr>
+              <td colspan="4">Nenhum registro encontrado.</td>
+            </tr>
+          `;
+          atualizarPaginacao();
+          return;
+        }
+
+        const inicio = (paginaAtual - 1) * TAM_PAGINA;
+        const fim = inicio + TAM_PAGINA;
+        const pagina = dadosCache.slice(inicio, fim);
+
+        let html = "";
+        pagina.forEach((item) => {
+          html += `<tr>
+              <td><a href="detalhes.html?id=${item.idUnico}">${item.idTransacao}</a></td>
               <td>${item.placa}</td>
               <td>${item.revisor}</td>
               <td>${item.status}</td>
             </tr>`;
-          });
         });
-    }
 
-    // Função para CRIAR (Envia o formulário)
-    document.getElementById("meuFormulario").addEventListener("submit", function(e) {
-      e.preventDefault();
-      // ... lógica do fetch POST que já funcionou ...
-      // DICA: Depois que o POST der sucesso, chame listar() para atualizar a tabela na hora!
-    });
+        corpo.innerHTML = html;
+        atualizarPaginacao();
+      }
 
-    // Carrega a lista assim que abrir o arquivo
-    window.onload = listar;
-  </script>
+      // FUNÇÃO LISTAR (Consistente com os nomes do objeto no Script)
+      function listar() {
+        fetch(URL_API + "?action=listar")
+          .then((res) => res.json())
+          .then((dados) => {
+            // Salva os dados no navegador para reaproveitar em outras telas (cache compartilhado)
+            localStorage.setItem("cacheRegistros", JSON.stringify(dados));
 
-</body>
+            dadosCache = dados || [];
+            paginaAtual = 1;
+            renderTabela();
+          })
+          .catch((err) => console.error("Erro ao listar:", err));
+      }
+
+      // FUNÇÃO CRIAR (Envia os parâmetros que o Script espera)
+      document
+        .getElementById("meuFormulario")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const btn = document.getElementById("btnSalvar");
+          btn.innerText = "Salvando...";
+          btn.disabled = true;
+
+          // Monta os parâmetros exatamente como o Script pede no e.parameter
+          const params = new URLSearchParams({
+            action: "criar",
+            idTransacao: document.getElementById("idTransacao").value,
+            placa: document.getElementById("placa").value,
+            pracaPortico: document.getElementById("pracaPortico").value,
+            revisor: document.getElementById("revisor").value,
+            // Adicione os outros campos aqui se desejar (osa, descricao, etc)
+          });
+
+          fetch(URL_API, {
+            method: "POST",
+            body: params,
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              alert(res.message);
+              document.getElementById("meuFormulario").reset();
+              listar(); // Atualiza a tabela na hora!
+            })
+            .catch((err) => alert("Erro: " + err))
+            .finally(() => {
+              btn.innerText = "Salvar";
+              btn.disabled = false;
+            });
+        });
+
+      window.onload = function () {
+        // Primeiro tenta carregar do cache para desenhar rápido
+        const cache = localStorage.getItem("cacheRegistros");
+        if (cache) {
+          try {
+            dadosCache = JSON.parse(cache) || [];
+            paginaAtual = 1;
+            renderTabela();
+          } catch (e) {
+            console.warn("Falha ao ler cacheRegistros, buscando da API.", e);
+          }
+        }
+
+        // Sempre atualiza em background para garantir dados mais novos
+        listar();
+
+        // Eventos da paginação
+        const btnAnterior = document.getElementById("btn-anterior");
+        const btnProximo = document.getElementById("btn-proximo");
+
+        if (btnAnterior) {
+          btnAnterior.addEventListener("click", function () {
+            if (paginaAtual > 1) {
+              paginaAtual--;
+              renderTabela();
+            }
+          });
+        }
+
+        if (btnProximo) {
+          btnProximo.addEventListener("click", function () {
+            const totalPaginas = Math.max(
+              1,
+              Math.ceil(dadosCache.length / TAM_PAGINA)
+            );
+            if (paginaAtual < totalPaginas) {
+              paginaAtual++;
+              renderTabela();
+            }
+          });
+        }
+      };
+    </script>
+  </body>
 </html>
